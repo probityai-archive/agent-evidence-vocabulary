@@ -44,6 +44,7 @@ Each was checked against all 522 CREs that OpenCRE's REST API returned on
 | `evidence_dimensions.party_role` | no requirement assigns named roles to the parties around one evidence set |
 | `evidence_dimensions.control_relation` | no requirement states who can direct the party a claim is about |
 | `evidence_dimensions.evidence_origin_class` | no requirement classes an evidence item by the act that produced it |
+| `evidence_dimensions.intent_binding` | no requirement fixes whether an action's authorizing intent was committed before it ran or asserted after |
 | `posture_and_coverage.does_not_assert` | the transparency requirements tell users about a system's limits, not what one signed claim withholds |
 | `posture_and_coverage.claim_subject` | no requirement separates claims about a tool, an agent and an organization |
 | `posture_and_coverage.base_state_resolution` | no requirement fixes how the before-state of an observed change interval is resolved |

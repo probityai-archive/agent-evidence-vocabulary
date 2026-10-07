@@ -32,7 +32,7 @@ and run `python3 scripts/validate_crosswalks.py` before opening a pull request.
 
 ## Status
 
-Release v0.4.0, tagged October 13, 2026. Nine proposed terms added since that tag ship at the next release. The registry file is CC0-1.0, and the rest of the
+Release v0.4.0, tagged October 13, 2026. Ten proposed terms added since that tag ship at the next release. The registry file is CC0-1.0, and the rest of the
 repository is Apache-2.0. Every term starts as proposed and is promoted only when an independent
 system emits it; the rules are in
 [GOVERNANCE.md](https://github.com/probityai/agent-evidence-vocabulary/blob/main/GOVERNANCE.md).
