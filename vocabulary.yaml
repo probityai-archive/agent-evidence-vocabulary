@@ -55,6 +55,12 @@ meta:
     an evidence: emitted declaration with a source_path a reviewer fetches. The
     bar for running is deliberately narrow. A plan sits outside it, and so does
     a mock.
+    A filing made from OUTSIDE, about a system the filer does not maintain,
+    records provenance and never counts toward promotion, whatever it declares.
+    The trigger names the emitting system as the filer, so a crosswalk carrying
+    third_party_authored: true documents somebody else's specification and moves
+    nothing. This was implied by the trigger and is now stated, because the
+    registry carries two such filings.
   status_at_this_version: >
     No term in this file is canonical and no term lists an issuer. Both follow
     from the rule directly above, and both were wrong at 0.1.0.
@@ -81,6 +87,14 @@ meta:
     grades other people's evidence is the first thing it has to grade.
     Verify by reading every status and issuers_in_production key in this file,
     and by listing crosswalk/.
+    Three terms added after the v0.4.0 tag, attestation_tier, origin_kind and
+    base_state_resolution, are proposed and list no issuer. Two of them are
+    borrowed, and crosswalk/asqav.yaml and crosswalk/trace.yaml record where
+    from. Both filings are marked third_party_authored: true, map published
+    specifications this project does not maintain, and declare evidence:
+    asserted, so neither promotes a term and neither is offered as promoting
+    one. The v0.4.0 tag does not carry the three terms; a citer pinning that
+    tag gets the registry without them, and they ship at the next release.
   opencre_links: >
     A term whose definition states a requirement that one of OpenCRE's Common
     Requirements organizes carries an opencre list. Each item names the CRE by
@@ -214,6 +228,124 @@ evidence_dimensions:
     issuers_in_production: []
     promotion_trigger: "An independent implementation that is not us, with a real beacon binding."
 
+  attestation_tier:
+    status: proposed
+    review_by: "2027-03-19"
+    values: [voluntary, authoritative]
+    definition: >
+      Whether the subject a platform signed was RE-DERIVED by that platform from
+      evidence the caller does not control (authoritative), or was accepted from
+      the caller and signed as supplied (voluntary). A voluntary record is
+      non-repudiable for exactly what was signed: this platform signed these
+      bytes, at this time, under this key. It is not a capture and it is not
+      unbypassable. A verifier MUST NOT read a voluntary attestation as evidence
+      that the attested content corresponds to any independently observed fact.
+      The tier is set by the PLATFORM and read by a verifier from the record. A
+      caller MUST NOT select it. A caller-selected tier is the whole attack: the
+      one party with an interest in the answer would be choosing how much weight
+      the answer carries.
+      Closed and fail-closed, on the same rule as containment_posture: an absent,
+      non-string, or unregistered value makes the enclosing statement malformed,
+      and a missing tier is never read as the stronger of the two.
+      The bounds of what was re-derived are part of the claim. Where a caller
+      supplied any bound of the re-derivation input, the record MUST declare
+      that, and a verifier MUST NOT read an authoritative tier as coverage of
+      everything the subject did.
+      SELECTION is part of the same question. A caller that chooses which subject
+      to request an attestation over, and when, has bounded the claim without
+      supplying any bound, so the rule above is not satisfied by a record that
+      merely had no bound to declare. coverage_denominator is the field that
+      closes that gap, and an authoritative record making any claim about a
+      population needs it.
+      An authoritative tier is a claim about a re-derivation, which is a claim
+      about bytes a platform fetched. It composes with observation_vantage and
+      never substitutes for it: whether anyone observed the execution is a
+      separate question this field does not answer. So a record declaring
+      authoritative MUST also declare observation_vantage, and a verifier MUST
+      reject an authoritative record that does not. Without that pairing the
+      composition rule has nothing to compose with, and a platform the observed
+      party operates can set the stronger tier on its own records forever.
+    issuers_in_production: []
+    promotion_trigger: >
+      An independently-maintained system that is not us, emitting the tier as a
+      field in a real signed statement and filing its own crosswalk with
+      evidence: emitted and a resolvable source_path.
+    why_this_registry: >
+      The split itself is not ours. A published Internet-Draft, cited in
+      crosswalk/asqav.yaml, defines these two tiers for one platform's own
+      attestation statements and states the verifier prohibition in the words
+      carried above. What this registry adds is the form a third party can
+      crosswalk onto, and two rules that draft leaves open.
+      First, its authoritative tier re-derives a digest over a commit range whose
+      base identifier the caller MAY supply, so the signer re-derives honestly
+      across a window the observed party chose. The draft concedes the
+      consequence in its own words, that the signed digest is not a claim the
+      range covers every change the producer authored, and a reader who sees only
+      the tier will read it as one. So the bound declaration above is a MUST here.
+      Second, a tier is only as independent as the platform that sets it. Where
+      the platform is operated by the party being observed, a platform-set tier is
+      caller-controlled through one more hop. That is why this field composes with
+      observation_vantage and is refused any standing on its own.
+
+  origin_kind:
+    status: proposed
+    review_by: "2027-03-19"
+    values: [self, third-party-control-plane, log-import]
+    definition: >
+      Which party produced the evidence a record is assembled from: the runtime
+      that performed the execution produced its own record (self); the record was
+      assembled from another vendor's runtime governance output, asserted by the
+      system that produced it with no root outside that system
+      (third-party-control-plane); or it was assembled from a log or export whose
+      producer is not a control plane, such as a SIEM export, an audit trail, or
+      a batch job (log-import).
+      A record whose origin_kind is not self MUST declare a software-only runtime
+      platform, and a verifier MUST reject it otherwise. An importer holding
+      someone else's log has no quote to present, so a hardware platform value on
+      such a record is not a stronger claim but an untrue one.
+      The value is REQUIRED. Absent, non-string, or unregistered makes the
+      enclosing statement malformed, and absence is never read as self.
+      This field names the assembler and establishes nothing about independence. A
+      verifier MUST NOT read third-party-control-plane as evidence that the
+      producer is independent of the observed party: the two can be one legal
+      entity, or one can operate the other. Independence is an
+      observation_vantage question and this field does not answer it.
+      It launders assurance in neither direction. Naming a producer does not make
+      unattested evidence attested, and a record with a hardware platform and a
+      verified quote is what it is whether or not it says self.
+      The value is a PRODUCER ASSERTION in the sense of field_evidence_partition,
+      never a substrate-covered field, and nothing in this registry can make it
+      one. A verifier MUST NOT read self as evidence of provenance: a record
+      assembled from somebody else's log and declared self is indistinguishable
+      on the wire from one the runtime produced. What the field is worth is that
+      a false value is then a false statement inside signed bytes, attributable
+      to the key that signed them. A record that carries
+      field_evidence_partition MUST place origin_kind on the producer_asserted
+      side of the split.
+      The three values are borrowed verbatim, hyphens included, from the
+      specification cited in crosswalk/trace.yaml. Re-spelling them in this
+      file's usual underscore style would have produced a false friend across two
+      registries for no gain.
+    issuers_in_production: []
+    promotion_trigger: >
+      An independently-maintained system that is not us, emitting the value as a
+      field in a real signed statement and filing its own crosswalk with
+      evidence: emitted and a resolvable source_path.
+    why_this_registry: >
+      Every other term here describes how a claim was obtained. This one
+      describes how it ARRIVED, and that is the question an adapter answers by
+      accident. The failure is documented in the specification the enum comes
+      from: an adapter built by starting from a hardware example and editing the
+      fields it understood emits a hardware platform on a record transcribed from
+      somebody else's log. No single field in that record is false and the whole
+      of it is untrue.
+      Two departures from the source are recorded in the crosswalk and both are
+      hardenings. The value is required here with no absence default, because
+      there the permissive reading is the default and a silent record cannot be
+      told from a self-produced one. And the field is explicitly denied any
+      independence meaning, because the value that reads most like corroboration
+      is the one a party can emit about its own control plane.
+
 # posture_and_coverage: what an execution environment was actually in, and
 # how much of a declared population a claim actually assessed.
 posture_and_coverage:
@@ -318,6 +450,70 @@ posture_and_coverage:
       consumer to read a passing tool grade as a statement about the agent or
       the operator. The class has to travel with the claim, as a closed value,
       or the collapse happens silently at the point of use.
+
+  base_state_resolution:
+    status: proposed
+    review_by: "2027-03-19"
+    values: [supplied, authority_recorded, empty_tree]
+    definition: >
+      How the before-state root of an observed interval was obtained, declared
+      per record as one of three: supplied, the base was named in the request and
+      is a full-length lowercase hexadecimal object name; authority_recorded, the
+      base is the one the state authority itself records for the change, which
+      for a version-control authority is the merge-base anchor and is stable
+      across merge and squash rewrites; empty_tree, the interval began from no
+      prior state at all and the base is the empty-tree constant of the declared
+      object format.
+      Resolution is ORDERED. A producer MUST try supplied, then
+      authority_recorded, then empty_tree, and MUST refuse to emit the record
+      where none of the three yields a base. A producer MUST NOT infer a base
+      from the parents of the named state, which are ambiguous for merge and
+      squash rewrites. A guessed base produces a record that verifies cleanly
+      over an interval nobody chose.
+      A before-state root is therefore unconditionally REQUIRED. The empty_tree
+      case is what makes one always available, so a missing before-state root is
+      a refusal and never a permitted omission.
+      The empty-tree constant is a property of the object format and MUST be read
+      from the format the record declares. For git's SHA-1 object format it is
+      4b825dc642cb6eb9a060e54bf8d69288fbee4904. For git's SHA-256 object format
+      it is
+      6ef19b41225c5369f1c104d45d8d85efa9b057b53b14b4b9b939dd74decc5321. A record
+      carrying the SHA-1 constant under a SHA-256 object format names an object
+      that does not exist, and a verifier MUST reject it.
+      empty_tree is permitted only where the authority shows the prior state was
+      empty, which for a version-control authority means a parentless commit. It
+      MUST NOT be used to mean that the observer did not enumerate the prior
+      state. A record using it that way satisfies every other rule above and
+      misstates the interval, which is why the permitted condition is normative.
+      The state authority MUST be named in the record, for all three values. And
+      empty_tree MUST NOT be resolved from the observer's own first sight of the
+      state: a first observation establishes that the observer saw nothing
+      earlier, never that nothing was there. A volume pre-populated by an image
+      and mounted fresh is the case this closes, because it presents to a first
+      observation exactly as an empty one does. Where no authority independent of
+      the observed party can show the prior state was empty, the producer MUST
+      refuse the record under the ordered rule above.
+    issuers_in_production: []
+    promotion_trigger: >
+      An independently-maintained system that is not us, emitting the resolved
+      branch as a field in a real signed statement and filing its own crosswalk
+      with evidence: emitted and a resolvable source_path.
+    why_this_registry: >
+      It sits in this block, beside coverage_denominator, because it answers the
+      same kind of question on a different axis. coverage_denominator says which
+      population a claim assessed. This says which interval it assessed, and an
+      unresolved base leaves the lower bound of that interval to the reader.
+      The ordered rule and the terminal case are lifted from a published
+      Internet-Draft, cited in crosswalk/asqav.yaml, which defines them for one
+      host's diff rendering of a commit range. Three things are added here. The
+      constant is bound to a declared object format, which that draft leaves
+      implicit while naming the SHA-1 value alone, and both values were checked
+      against a repository in each format on 2026-09-19 before being written into
+      this file. The resolved BRANCH is itself the registered value, so a
+      verifier reads which of the three produced the base and does not re-derive
+      the ordering from what the record happens to carry. And the terminal case
+      carries a permitted condition, so it cannot stand for a prior state nobody
+      looked at.
 
 # outcome_lattice: the recomputable verdict a consumer derives, never a
 # policy threshold and not producer-asserted.
