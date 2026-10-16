@@ -55,7 +55,7 @@ actually spoken.
 
 ## Status
 
-Version 0.4.0, tagged October 13, 2026. It adds the `record_lifecycle` section, the `change_admission` section that the agent change admission predicate carries, and links from eight terms to the OpenCRE requirements their definitions state.
+Version 0.5.0, tagged October 16, 2026. It adds ten proposed terms: attestation tier, origin kind and base-state resolution, six terms anchored on a legal instrument, and intent binding. Version 0.4.0 added the `record_lifecycle` section, the `change_admission` section that the agent change admission predicate carries, and links from eight terms to the OpenCRE requirements their definitions state.
 
 The initial term set came from reading the nearest comparable registry term by term and recording,
 for each of ours, whether it names ground nobody has named yet or overlaps something already in

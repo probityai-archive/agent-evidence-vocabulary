@@ -10,13 +10,13 @@
 # records provenance and nothing else.
 #
 # vocabulary_version_targeted names the registry file this was written
-# against. The terms mapped below were added after the v0.4.0 tag, so that tag
-# does not carry them. Re-target this at the next release tag once it is cut.
+# against. The terms mapped below were added in 0.5.0, so the v0.4.0 tag does
+# not carry them.
 
 system: "Asqav compliance receipts profile (draft-marques-asqav-compliance-receipts-08)"
 system_url: "https://datatracker.ietf.org/doc/draft-marques-asqav-compliance-receipts/08/"
 crosswalk_version: "0.1.0"
-vocabulary_version_targeted: "0.4.0"
+vocabulary_version_targeted: "0.5.0"
 
 maintainer:
   github: "astrogilda"

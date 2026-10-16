@@ -19,11 +19,11 @@
 #
 # Precedent for this shape: IANA JWT claim registry, JSON-LD @context registries.
 #
-# version: "0.4.0"
+# version: "0.5.0"
 # status: "draft - open for review"
 
 meta:
-  version: "0.4.0"
+  version: "0.5.0"
   status: "draft - open for review"
   spec_anchor: "spec/predicates/adversarial-execution-evidence.md"
   spec_anchor_repo: "https://github.com/probityai/agent-evidence-vectors"
@@ -87,7 +87,8 @@ meta:
     grades other people's evidence is the first thing it has to grade.
     Verify by reading every status and issuers_in_production key in this file,
     and by listing crosswalk/.
-    Three terms added after the v0.4.0 tag, attestation_tier, origin_kind and
+    Version 0.5.0 adds ten terms, all proposed, none listing an issuer. Three of
+    them, attestation_tier, origin_kind and
     base_state_resolution, are proposed and list no issuer. Two of them are
     borrowed, and crosswalk/asqav.yaml and crosswalk/trace.yaml record where
     from. origin_kind carries a fourth value this registry adds to the
@@ -97,9 +98,9 @@ meta:
     third_party_authored: true, map published specifications this project does
     not maintain, and declare evidence:
     asserted, so neither promotes a term and neither is offered as promoting
-    one. The v0.4.0 tag does not carry the three terms; a citer pinning that
-    tag gets the registry without them, and they ship at the next release.
-    Six more terms added after the v0.4.0 tag are proposed, list no issuer,
+    one. The v0.4.0 tag does not carry the ten terms; a citer pinning that
+    tag gets the registry without them.
+    Six more terms added in 0.5.0 are proposed, list no issuer,
     and bring the first external_instruments block. The six are
     independence_basis, party_role, control_relation and evidence_origin_class under evidence_dimensions, and
     set_sufficiency and material_change_trigger under posture_and_coverage. Each
@@ -112,8 +113,7 @@ meta:
     records a drafting pattern in that instrument's annex, with the two counts
     that were measured and an explicit refusal to assert the per-criterion
     counts the converted source cannot support.
-    intent_binding, also added after the v0.4.0 tag, is proposed and lists no
-    issuer.
+    intent_binding, the tenth, is proposed and lists no issuer.
   opencre_links: >
     A term whose definition states a requirement that one of OpenCRE's Common
     Requirements organizes carries an opencre list. Each item names the CRE by
