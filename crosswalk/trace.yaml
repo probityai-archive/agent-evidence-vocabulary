@@ -37,10 +37,13 @@ evidence_dimensions:
     evidence: asserted
     source_path: "https://github.com/agentrust-io/trace-spec/blob/98aae176aa9ae4053d944624dad7629c76789ff7/spec/trace-v0.2.md"
     notes: >
-      Section 3.1.1, `origin`: who assembled this record. The closed value set is
-      the one this registry now carries, borrowed verbatim including the hyphens,
-      so a producer's value validates on both sides with no translation table.
-      The platform MUST is borrowed with it.
+      Section 3.1.1, `origin`: who assembled this record. Three of this registry's
+      four values are that value set, borrowed verbatim including the hyphens, so
+      every value the specification emits validates here with no translation table.
+      The platform MUST is borrowed with it, narrowed to the two assembling values.
+      The fourth value, `first-hand`, is this registry's own and maps to nothing in
+      the specification, so the set is a superset and the mismatch runs one way
+      only.
     source_quote: >
       "A record whose `origin.kind` is not `self` MUST carry `runtime.platform:
       "software-only"`, and a verifier MUST reject it otherwise. An importer
@@ -80,6 +83,41 @@ evidence_dimensions:
         value, `runtime.platform: "software-only"`. This registry states the same
         rule over a declared software-only platform without binding it to that
         field name, so a system carrying the platform elsewhere is still held to it.
+      - >
+        The below-the-observed role. This one ADDS A VALUE; it does not tighten a
+        reading. The specification's enum is written from the perspective of a
+        record about its own execution, and its hardware profiles carry the
+        below-the-runtime claim in `runtime.platform`, not in `origin`, so it
+        has no value for a producer that observed somebody else's execution from a
+        layer that party does not control. This registry also carries
+        observation_vantage, which names exactly that producer, so the borrowed enum
+        left a REQUIRED field unfillable for the records an independent observer
+        emits and the only spelling available was `self`. `first-hand` is added,
+        `observation_vantage: below-observed` is permitted only with it, and the
+        platform MUST is narrowed to `third-party-control-plane` and `log-import` so
+        that such an observer may still carry a root of its own.
+      - >
+        The spelling, and a claim this file nearly made. Two drafts were dropped.
+        `observer-below` went because it carried the layer in the value's own name,
+        which leaves a peer-vantage observer unfillable and reproduces the defect the
+        fourth value exists to remove; the layer belongs to observation_vantage, so
+        `first-hand` says how the evidence arrived and the two compose. `observer`
+        went earlier, on a claim this file nearly made: that the word appears nowhere
+        in the source tree. It does. At the pinned commit `git grep -nw observer -- spec schema` returns
+        two lines, both in `spec/server-provenance-v1.md`, where `observer-attested`
+        is one rung of a three-value assurance ladder and means "a third party that
+        fetched and measured the server". A control in the same run, `git grep -lw
+        origin -- spec schema`, returns `schema/trace-claim.json` and both
+        specification versions, so the read path was never in question and the
+        absence claim was simply false. Two consequences, and the second is worth
+        more than the first. A bare `observer` beside their `observer-attested` would
+        have named a different party in the same word. And that ladder is the cleanest available evidence that the
+        rung is missing, not unwanted: `observer-attested` carries the caveat
+        that it "does not catch a server that behaves one way for the observer and
+        another way for you", and the rung above it, `tee-attested`, is the observed
+        party attesting itself from inside a TEE and "requires the operator to have
+        adopted a confidential runtime". A producer below the observed party answers
+        the caveat without the requirement, and the ladder has no row for it.
 
   attestation_tier:
     match: no_mapping

@@ -90,7 +90,10 @@ meta:
     Three terms added after the v0.4.0 tag, attestation_tier, origin_kind and
     base_state_resolution, are proposed and list no issuer. Two of them are
     borrowed, and crosswalk/asqav.yaml and crosswalk/trace.yaml record where
-    from. Both filings are marked third_party_authored: true, map published
+    from. origin_kind carries a fourth value this registry adds to the
+    borrowed enum, first-hand, with the rule that binds observation_vantage:
+    below-observed to it; the reason is in the term and the departure is the
+    third recorded in crosswalk/trace.yaml. Both filings are marked third_party_authored: true, map published
     specifications this project does not maintain, and declare evidence:
     asserted, so neither promotes a term and neither is offered as promoting
     one. The v0.4.0 tag does not carry the three terms; a citer pinning that
@@ -290,7 +293,7 @@ evidence_dimensions:
   origin_kind:
     status: proposed
     review_by: "2027-03-19"
-    values: [self, third-party-control-plane, log-import]
+    values: [self, first-hand, third-party-control-plane, log-import]
     definition: >
       Which party produced the evidence a record is assembled from: the runtime
       that performed the execution produced its own record (self); the record was
@@ -299,10 +302,43 @@ evidence_dimensions:
       (third-party-control-plane); or it was assembled from a log or export whose
       producer is not a control plane, such as a SIEM export, an audit trail, or
       a batch job (log-import).
-      A record whose origin_kind is not self MUST declare a software-only runtime
-      platform, and a verifier MUST reject it otherwise. An importer holding
-      someone else's log has no quote to present, so a hardware platform value on
-      such a record is not a stronger claim but an untrue one.
+      first-hand is a FOURTH value this registry adds and the source enum does not
+      carry: the producer obtained the evidence by its own observation and is not
+      the party that executed, so it neither performed the execution nor holds
+      somebody else's output. It exists because the borrowed enum is written from
+      the perspective of a record about its own execution, while this registry also
+      carries observation_vantage, which names a producer that is neither the
+      executing party nor an assembler. Without the fourth value the field is
+      REQUIRED and unfillable for exactly the records an independent observer
+      emits, and the pressure is then to spell one of them self, which is the one
+      reading that makes the field lie.
+      The value says HOW the evidence arrived and never where the producer stood.
+      observation_vantage says where, and the two compose: first-hand with peer and
+      first-hand with below-observed are both real producers, and a value that
+      carried the layer in its own name would have left one of them unfillable
+      again. Two spellings were drafted and dropped for that reason, and the
+      second for a second reason: observer collides with observer-attested in the
+      source specification's own family, where it means a third party that fetched
+      and measured the subject from outside it.
+      A record MUST NOT declare observation_vantage: below-observed unless its
+      origin_kind is first-hand, and a verifier MUST reject it otherwise. A party
+      attesting its own execution is not below itself, and an assembler holding
+      somebody else's output was not there at all. Each of
+      the other three values names a producer that did not observe from below the
+      observed party: self IS the observed party, and the two assembling values
+      hold output somebody else produced. This is the rule that reaches the
+      importer the platform rule below does not. An importer can carry
+      software-only exactly as required, satisfy every other rule here, and still
+      claim a vantage it never occupied, because the platform field answers what
+      the producer runs on and the vantage field answers where it stood.
+      A record whose origin_kind is third-party-control-plane or log-import MUST
+      declare a software-only runtime platform, and a verifier MUST reject it
+      otherwise. An importer holding someone else's log has no quote to present,
+      so a hardware platform value on such a record is not a stronger claim but an
+      untrue one. first-hand MAY declare a hardware platform, because such an
+      observer
+      below the observed party can hold a root of its own, and that is the case the
+      borrowed rule had no value for.
       The value is REQUIRED. Absent, non-string, or unregistered makes the
       enclosing statement malformed, and absence is never read as self.
       This field names the assembler and establishes nothing about independence. A
@@ -322,10 +358,16 @@ evidence_dimensions:
       to the key that signed them. A record that carries
       field_evidence_partition MUST place origin_kind on the producer_asserted
       side of the split.
-      The three values are borrowed verbatim, hyphens included, from the
+      Three of the four values are borrowed verbatim, hyphens included, from the
       specification cited in crosswalk/trace.yaml. Re-spelling them in this
       file's usual underscore style would have produced a false friend across two
-      registries for no gain.
+      registries for no gain. The fourth, first-hand, is this registry's own, and
+      the
+      direction of the resulting mismatch is stated, not glossed: this value
+      set is a SUPERSET, so every value that specification emits validates here,
+      and one value this registry admits does not validate there. A crosswalk
+      consumer reads the fourth value as unmapped, not as a renaming of any
+      of the three.
     issuers_in_production: []
     promotion_trigger: >
       An independently-maintained system that is not us, emitting the value as a
@@ -339,12 +381,23 @@ evidence_dimensions:
       fields it understood emits a hardware platform on a record transcribed from
       somebody else's log. No single field in that record is false and the whole
       of it is untrue.
-      Two departures from the source are recorded in the crosswalk and both are
-      hardenings. The value is required here with no absence default, because
+      Three departures from the source are recorded in the crosswalk and all three
+      are hardenings. The value is required here with no absence default, because
       there the permissive reading is the default and a silent record cannot be
-      told from a self-produced one. And the field is explicitly denied any
+      told from a self-produced one. The field is explicitly denied any
       independence meaning, because the value that reads most like corroboration
-      is the one a party can emit about its own control plane.
+      is the one a party can emit about its own control plane. And the value set
+      gains the first-hand role the source model has no rung for, together with the
+      rule that binds the independence claim to it, because a required
+      field with no true value for a real producer is a field that gets filled with
+      a false one. The source family's own assurance ladder is the evidence that the
+      rung is missing, not unwanted: it runs publisher-asserted,
+      observer-attested, tee-attested, and the middle rung carries the caveat that
+      it "does not catch a server that behaves one way for the observer and another
+      way for you", while the top rung is the observed party attesting itself from
+      inside a TEE and, in their own words, "requires the operator to have adopted a
+      confidential runtime". A producer standing below the observed party answers
+      that caveat without that requirement, and their ladder has no row for it.
 
 # posture_and_coverage: what an execution environment was actually in, and
 # how much of a declared population a claim actually assessed.
