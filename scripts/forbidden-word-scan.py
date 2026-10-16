@@ -114,9 +114,9 @@ def tracked_files() -> list[Path]:
 
 # The organisation that owns these repositories is named in their own URLs, and a
 # URL cannot avoid naming its owner. The span is held hex-encoded because this
-# file is itself scanned by the guards it belongs to, and it is kept here rather
-# than only in the sidecar because the declared-spans self-check below must know
-# that this name is ruled on deliberately rather than by omission.
+# file is itself scanned by the guards it belongs to, and it is kept here and not
+# only in the sidecar because the declared-spans self-check below must know
+# that this name is ruled on deliberately, and not by omission.
 OWNER_SPAN = "70726f626974796169"
 
 # The permit that lets this repository name its own URLs is held in ONE place,

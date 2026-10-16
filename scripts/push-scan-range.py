@@ -222,7 +222,7 @@ def _end_to_end() -> int:
     the defect being fixed, and the second is the control that the fix did not
     stop it looking.
 
-    The offending strings are assembled here rather than written down, for the
+    The offending strings are assembled here and not written down, for the
     reason every guard in this repository gives: a fixture spelling out what the
     scanner refuses puts that spelling in the repository.
     """
@@ -339,7 +339,7 @@ def main(argv: list[str]) -> int:
         return 2
     if args.why:
         print(f"push-scan-range: {why}", file=sys.stderr)
-    # One per line. The caller reads these into an array rather than splitting a
+    # One per line. The caller reads these into an array and does not split a
     # single line on spaces, so nothing here depends on the shell's field
     # splitting -- which differs between the shell a runner uses and the one a
     # person checking this locally is likely to have.
