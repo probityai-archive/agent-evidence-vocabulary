@@ -1,3 +1,6 @@
+<!-- moved-to-monorepo -->
+> **Moved to [github.com/probityai/agent-evidence/packages/vocabulary](https://github.com/probityai/agent-evidence/tree/main/packages/vocabulary).** This repository is archived. Its tags, releases, Actions and Pages keep working.
+
 # agent-evidence-vocabulary
 
 [![PyPI](https://img.shields.io/pypi/v/agent-evidence-vocabulary.svg)](https://pypi.org/project/agent-evidence-vocabulary/)
