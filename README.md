@@ -1,5 +1,5 @@
 <!-- moved-to-monorepo -->
-> **Moved to [probityai/agent-evidence/packages/vocabulary](https://github.com/probityai/agent-evidence/tree/main/packages/vocabulary). Star and follow it there.** This repository is archived; its tags and releases keep working.
+> **Moved to [probityai/agent-evidence-vectors/packages/vocabulary](https://github.com/probityai/agent-evidence-vectors/tree/main/packages/vocabulary). Star and follow it there.** This repository is archived and has no planned delete date; its tags and releases keep working.
 
 # agent-evidence-vocabulary
 
